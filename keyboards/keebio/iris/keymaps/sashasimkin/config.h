@@ -22,3 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Flush thru left part
 // #define EE_HANDS
 #define MASTER_LEFT
+
+#define RGBLIGHT_SLEEP
+// #define RGBLIGHT_SPLIT
