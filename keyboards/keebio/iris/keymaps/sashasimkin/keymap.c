@@ -1,14 +1,16 @@
 #include QMK_KEYBOARD_H
 
 
-#define _QWERTY 0
-#define _LOWER 1
-#define _RAISE 2
-#define _FN 3
-#define _ADJUST 4
+#define _QWERTY_MAC 0
+#define _QWERTY_PC 1
+#define _LOWER 5
+#define _RAISE 6
+#define _FN 7
+#define _ADJUST 8
 
 enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
+  QWERTY_MAC = SAFE_RANGE,
+  QWERTY_PC,
   LOWER,
   RAISE,
   FN,
@@ -17,7 +19,21 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_QWERTY] = LAYOUT(
+  [_QWERTY_MAC] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_TAB,  CTL_T(KC_A),    OPT_T(KC_S),    SFT_T(KC_D),    CMD_T(KC_F),    KC_G,                               KC_H,    RCMD_T(KC_J),    RSFT_T(KC_K),    ROPT_T(KC_L),    RCTL_T(KC_SCLN), KC_QUOT,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RCTRL,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                    KC_LALT, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ),
+
+  [_QWERTY_PC] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
@@ -77,11 +93,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      RESET,   DEBUG,   EEP_RST, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,                            _______, _______, LCTL(KC_UP), _______, _______, _______,
+     RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,                            _______, _______, LCTL(KC_UP), _______, QWERTY_PC, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______, _______,                            _______, LCTL(KC_LEFT), LCTL(KC_DOWN), LCTL(KC_RGHT), _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     BL_STEP, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______,
+     BL_STEP, _______, _______, _______, _______, _______, _______,          _______, _______, QWERTY_MAC, _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -91,9 +107,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QWERTY:
+    case QWERTY_PC:
       if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY);
+        set_single_persistent_default_layer(_QWERTY_PC);
+      }
+      return false;
+      break;
+    case QWERTY_MAC:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(_QWERTY_MAC);
       }
       return false;
       break;
