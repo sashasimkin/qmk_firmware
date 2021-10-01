@@ -1,23 +1,22 @@
 
 #### Keymap - ToDo
-
-- LOWER+SHIFT - not sustaintable behavior - CTRL+SHIFT+T works, but ... doesn't
-- CTRL+ENTER - sucks, find out where to move SHIFT+INS
-- get finer controls for underglow https://beta.docs.qmk.fm/using-qmk/hardware-features/lighting/feature_rgblight#keycodes
-- MAC - Mod-Tap finally?
-
+- Re-think lower to be more useful, since you now using ModTaps
+- Highlight different layers https://docs.qmk.fm/#/feature_rgblight?id=lighting-layers
+- Resolve sleeping issue (https://docs.qmk.fm/#/ref_functions?id=software-timers ?)
 
 #### Keymap - think about it
 - CTRL+K - doesn't feel ok - maybe not that bad thou? - maybe to make double tap on LOWER=CTRL?
-- Try mod tap for modifiers?
-    - https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/mod_tap
-    - https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold
     
 - Adjust layer + mods - doesn't do good, maybe move modifiers to thumb cluster or sth?
 
 #### Keymap - validate
 - Shift + Tilda - hurts!!! - RAISE + GRV = tilda
 - underglow off when PC falls asleep
+- MAC - Mod-Tap - finally!
+- Try mod tap for modifiers?
+    - https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/mod_tap
+    - https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold
+- get finer controls for underglow https://beta.docs.qmk.fm/using-qmk/hardware-features/lighting/feature_rgblight#keycodes
 
 #### Keymap - done
 - comment/uncomment gesture hurts - now you can do it with LOWER+Slash now

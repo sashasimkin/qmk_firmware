@@ -24,7 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_LEFT
 
 #define RGBLIGHT_SLEEP
-// #define RGBLIGHT_SPLIT
+
+// # define RGBLIGHT_SPLIT
 
 #define TAPPING_TERM 300
 
@@ -32,4 +33,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define IGNORE_MOD_TAP_INTERRUPT
 
-#define RETRO_TAPPING
+// #define RETRO_TAPPING

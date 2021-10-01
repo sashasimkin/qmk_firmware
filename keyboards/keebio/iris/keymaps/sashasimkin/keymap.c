@@ -1,8 +1,14 @@
 #include QMK_KEYBOARD_H
 
+/**
+ * Cool Function where a single key does CMD+TAB
+ * Copy & slight adjustment: https://beta.docs.qmk.fm/features/feature_macros#super-alt-tab
+ */
+bool is_alt_tab_active = false;    // ADD this near the begining of keymap.c
+uint16_t alt_tab_timer = 0;        // we will be using them soon.
 
 #define _QWERTY_MAC 0
-#define _QWERTY_PC 1
+#define _QWERTY_GAME 1
 #define _LOWER 5
 #define _RAISE 6
 #define _FN 7
@@ -10,11 +16,13 @@
 
 enum custom_keycodes {
   QWERTY_MAC = SAFE_RANGE,
-  QWERTY_PC,
+  QWERTY_GAME,
   LOWER,
   RAISE,
   FN,
   ADJUST,
+
+  ALT_TAB,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -27,13 +35,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  CTL_T(KC_A),    OPT_T(KC_S),    SFT_T(KC_D),    CMD_T(KC_F),    KC_G,                               KC_H,    RCMD_T(KC_J),    RSFT_T(KC_K),    ROPT_T(KC_L),    RCTL_T(KC_SCLN), KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RCTRL,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           RCTL(KC_SPC),  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, ALT_TAB,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LALT, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
-  [_QWERTY_PC] = LAYOUT(
+  [_QWERTY_GAME] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
@@ -41,9 +49,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RCTRL,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, ALT_TAB,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LALT, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
+                                    KC_LCTRL, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -55,7 +63,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                                                       ├────────┼────────┼────────┼────────┼────────┼────────┤
      LCTL(KC_TAB), LCTL(KC_A), LCTL(KC_S), LCTL(KC_D), LCTL(KC_F), LCTL(KC_G),                                      _______, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐                                     ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     LCTL(KC_LSFT), LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_B), KC_MPLY,                   _______, _______, _______, _______, _______, LCTL(KC_SLSH), _______,
+     LCTL(KC_LSFT), LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_B)
+     , KC_MPLY,                   _______, _______, _______, _______, _______, LCTL(KC_SLSH), _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘                                     └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                                                LSFT(KC_INS), _______, _______
                                 // └────────┴────────┴────────┘                                              └────────┴────────┴────────┘
@@ -93,11 +102,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      RESET,   DEBUG,   EEP_RST, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,                            _______, _______, LCTL(KC_UP), _______, QWERTY_PC, _______,
+     RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,                            _______, _______, LCTL(KC_UP), _______, DF(_QWERTY_GAME), _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______, _______,                            _______, LCTL(KC_LEFT), LCTL(KC_DOWN), LCTL(KC_RGHT), _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     BL_STEP, _______, _______, _______, _______, _______, _______,          _______, _______, QWERTY_MAC, _______, _______, _______, _______,
+     BL_STEP, _______, _______, _______, _______, _______, _______,          _______, _______, DF(_QWERTY_MAC), _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -107,18 +116,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case QWERTY_PC:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY_PC);
-      }
-      return false;
-      break;
-    case QWERTY_MAC:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY_MAC);
-      }
-      return false;
-      break;
+    // case QWERTY_GAME:
+    //   if (record->event.pressed) {
+    //     set_single_persistent_default_layer(_QWERTY_GAME);
+    //   }
+    //   return false;
+    //   break;
+    // case QWERTY_MAC:
+    //   if (record->event.pressed) {
+    //     set_single_persistent_default_layer(_QWERTY_MAC);
+    //   }
+    //   return false;
+    //   break;
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
@@ -159,8 +168,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case ALT_TAB:
+      if (record->event.pressed) {
+        if (!is_alt_tab_active) {
+          is_alt_tab_active = true;
+          register_code(KC_LCMD);
+        }
+        alt_tab_timer = timer_read();
+        register_code(KC_TAB);
+      } else {
+        unregister_code(KC_TAB);
+      }
+      break;
   }
   return true;
+}
+
+// The very important timer.
+void matrix_scan_user(void) {
+  if (is_alt_tab_active && timer_elapsed(alt_tab_timer) > 1000) {
+    unregister_code(KC_LCMD);
+    is_alt_tab_active = false;
+  }
 }
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
