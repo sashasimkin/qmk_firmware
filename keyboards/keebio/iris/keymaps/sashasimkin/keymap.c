@@ -23,6 +23,7 @@ enum custom_keycodes {
   ADJUST,
 
   ALT_TAB,
+  SWITCH_LANG,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -35,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  CTL_T(KC_A),    OPT_T(KC_S),    SFT_T(KC_D),    CMD_T(KC_F),    KC_G,                               KC_H,    RCMD_T(KC_J),    RSFT_T(KC_K),    ROPT_T(KC_L),    RCTL_T(KC_SCLN), KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           RCTL(KC_SPC),  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, ALT_TAB,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           SWITCH_LANG,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, SGUI(KC_X),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LALT, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -49,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, ALT_TAB,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,           KC_LGUI,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, SGUI(KC_X),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LCTRL, LOWER,   KC_SPC,                    KC_ENT,  RAISE,   FN
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -194,6 +195,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_TAB);
       } else {
         unregister_code(KC_TAB);
+      }
+      break;
+    case SWITCH_LANG:
+      if (record->event.pressed) {
+        register_code(KC_LCTL);
+        register_code(KC_SPC);
+      } else {
+        unregister_code(KC_LCTL);
+        unregister_code(KC_SPC);
       }
       break;
   }

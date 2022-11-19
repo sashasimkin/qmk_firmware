@@ -1,18 +1,18 @@
 
 #### Keymap - ToDo
 - Re-think lower to be more useful, since you now using ModTaps
-- Highlight different layers https://docs.qmk.fm/#/feature_rgblight?id=lighting-layers
-- Resolve sleeping issue (https://docs.qmk.fm/#/ref_functions?id=software-timers ?)
+- Line start / Line end on Mac FFS
 - Explore https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/feature_leader_key for common tasks
     - E.g. a p - aplaybook
     - g s - git status<ENTER>
 - Explore  dynamic macros (w/ LOWER layer, maybe?)
 - EXPORE NKRO (LOWER TOO?)
+- That corner key - replace it w/ Print-screen
+- Maybe LOWER+ENTER should be space and RAISE+SPACE should be enter? so one-handed is not that painpul
 
 #### Keymap - think about it
-- CTRL+K - doesn't feel ok - maybe not that bad thou? - maybe to make double tap on LOWER=CTRL?
-    
-- Adjust layer + mods - doesn't do good, maybe move modifiers to thumb cluster or sth?
+- Resolve sleeping issue (https://docs.qmk.fm/#/ref_functions?id=software-timers ?)
+    - What issue, jizuz
 
 #### Keymap - validate
 - Shift + Tilda - hurts!!! - RAISE + GRV = tilda
@@ -22,6 +22,9 @@
     - https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/mod_tap
     - https://beta.docs.qmk.fm/using-qmk/software-features/tap_hold
 - get finer controls for underglow https://beta.docs.qmk.fm/using-qmk/hardware-features/lighting/feature_rgblight#keycodes
+- Highlight different layers https://docs.qmk.fm/#/feature_rgblight?id=lighting-layers
+    - Not using highlight or layers that heavy :(
+
 
 #### Keymap - done
 - comment/uncomment gesture hurts - now you can do it with LOWER+Slash now
