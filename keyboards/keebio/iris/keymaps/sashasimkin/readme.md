@@ -10,11 +10,13 @@
 #### Keymap - think about it
 - Highlight different layers https://docs.qmk.fm/#/feature_rgblight?id=lighting-layers
     - Not using highlight or layers that heavy :(
+- https://docs.qmk.fm/features/caps_word
 
 #### Keymap - validate
 
 #### Keymap - done
 - Maybe LOWER+ENTER should be space and RAISE+SPACE should be enter? so one-handed is not that painpul
+  - The other way around lol
 - That corner key - replace it w/ Print-screen
 - Try mod tap for modifiers?
     - https://beta.docs.qmk.fm/using-qmk/advanced-keycodes/mod_tap

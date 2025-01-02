@@ -24,13 +24,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_RIGHT
 
 #define RGBLIGHT_SLEEP
+#define RGBLIGHT_LAYERS
 
-// # define RGBLIGHT_SPLIT
-
-#define TAPPING_TERM 300
+#define TAPPING_TERM 250
 
 #define PERMISSIVE_HOLD
 
-#define IGNORE_MOD_TAP_INTERRUPT
+#define LAYER_STATE_16BIT
 
 // #define RETRO_TAPPING
